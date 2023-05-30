@@ -10,6 +10,7 @@ import Reachability
 
 class FavoritesViewController: UIViewController {
 
+    @IBOutlet weak var emptyView: UIView!
     var reachability:Reachability!
     @IBOutlet weak var favoriteLeaguesTable: UITableView!
     var footballArr:[League]!
@@ -48,6 +49,13 @@ class FavoritesViewController: UIViewController {
         basketballArr = viewModel.getFavorites(sport: "basketball")
         cricketArr = viewModel.getFavorites(sport: "cricket")
         tennisArr = viewModel.getFavorites(sport: "tennis")
+        if(footballArr.isEmpty && basketballArr.isEmpty && cricketArr.isEmpty && tennisArr.isEmpty){
+            emptyView.isHidden = false
+            favoriteLeaguesTable.isHidden = true
+        }else{
+            emptyView.isHidden = true
+            favoriteLeaguesTable.isHidden = false
+        }
         favoriteLeaguesTable.reloadData()
     }
 }
@@ -153,7 +161,13 @@ extension FavoritesViewController:UITableViewDelegate,UITableViewDataSource{
                 self.tennisArr = self.viewModel.getFavorites(sport: "tennis")
             }
             self.favoriteLeaguesTable.reloadData()
-
+            if(self.footballArr.isEmpty && self.basketballArr.isEmpty && self.cricketArr.isEmpty && self.tennisArr.isEmpty){
+                self.emptyView.isHidden = false
+                self.favoriteLeaguesTable.isHidden = true
+            }else{
+                self.emptyView.isHidden = true
+                self.favoriteLeaguesTable.isHidden = false
+            }
         }
         let actionCancel = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(actionDelete)

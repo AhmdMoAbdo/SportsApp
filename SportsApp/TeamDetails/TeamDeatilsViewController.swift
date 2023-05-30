@@ -38,9 +38,12 @@ extension TeamDeatilsViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "player") as! PlayersTableViewCell
-        cell.playerName.text = "\(team.players?[indexPath.row].player_name ?? "--")"
-        cell.playerNumber.text = "\(team.players?[indexPath.row].player_number ?? "--")"
-        cell.playerPosition.text = "\(team.players?[indexPath.row].player_type ?? "--")"
+        cell.playerName.text = "\(team.players?[indexPath.row].player_name ?? "")"
+        cell.playerNumber.text = "\(team.players?[indexPath.row].player_number ?? "")"
+        if(cell.playerNumber.text == ""){
+            cell.shirtNOLabel.text = ""
+        }
+        cell.playerPosition.text = "\(team.players?[indexPath.row].player_type ?? "")"
         cell.playerImage.kf.setImage(with: URL(string: team.players?[indexPath.row].player_image ?? ""),placeholder: UIImage(named: "football"))
         cell.playerImage.layer.cornerRadius = 20
         return cell

@@ -17,8 +17,13 @@ class CountriesViewController: UIViewController {
     var sport:String = ""
     var headerTitle:String = ""
     var viewModel:ViewModelProtocol!
+    var networkIndicator:UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        networkIndicator = UIActivityIndicatorView(style: .large)
+        networkIndicator.center = self.view.center
+        self.view.addSubview(networkIndicator)
+        networkIndicator.startAnimating()
         headerLabel.text = headerTitle
         viewModel = ViewModel(api: ApiHandler())
         prepateData()
@@ -35,8 +40,9 @@ class CountriesViewController: UIViewController {
                 self?.arr = Array()
             }else{
                 self?.arr = result
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     self?.countriesCollection.reloadData()
+                    self?.networkIndicator.stopAnimating()
                 }
             }
         }

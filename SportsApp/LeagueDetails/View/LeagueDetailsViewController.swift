@@ -28,9 +28,15 @@ class LeagueDetailsViewController: UIViewController {
     var latestHeaderCount = 0
     var teamsCount = 0
     var fakeCell = 0
+    var networkIndicator:UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        networkIndicator = UIActivityIndicatorView(style: .large)
+        networkIndicator.center = self.view.center
+        self.view.addSubview(networkIndicator)
+        networkIndicator.startAnimating()
+        var group = DispatchGroup()
         prepareDates()
         leagueName.text = league.league_name
         let cellNib = UINib(nibName: "EventCollectionViewCell", bundle: nil)
@@ -41,7 +47,6 @@ class LeagueDetailsViewController: UIViewController {
         leagueDetailsCollection.register(headerNib, forCellWithReuseIdentifier: "header")
         
         viewModel = LeagueDetailsViewModel(api: ApiHandler(), db: DBManger(appDelegate: UIApplication.shared.delegate as? AppDelegate))
-        
             isFavorite = viewModel.isFavourite(league: league, sport: sport)
             if(isFavorite){
                 heartImg.image = UIImage(systemName: "heart.fill")
@@ -54,16 +59,18 @@ class LeagueDetailsViewController: UIViewController {
             "from":currentDate,
             "to":nextYear
         ]
+        group.enter()
         viewModel.getItems(parameters: &upComingParameters,sport:sport){[weak self] (result:[Event]) in
+            group.leave()
             if(result.isEmpty){
                 self?.upcomingEvents = Array()
                 self?.fakeCell = 1
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     self?.leagueDetailsCollection.reloadData()
                 }
             }else{
                 self?.upcomingEvents = result
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     self?.leagueDetailsCollection.reloadData()
                 }
             }
@@ -74,7 +81,9 @@ class LeagueDetailsViewController: UIViewController {
             "from":prevYear,
             "to":currentDate
         ]
+        group.enter()
         viewModel.getItems(parameters: &latestParameters,sport:sport){[weak self] (result:[Event]) in
+            group.leave()
             if(result.isEmpty){
                 self?.latestResults = Array()
             }else{
@@ -82,7 +91,7 @@ class LeagueDetailsViewController: UIViewController {
                 if(!(self?.latestResults.isEmpty)!){
                     self?.latestHeaderCount = 1
                 }
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     self?.leagueDetailsCollection.reloadData()
                 }
             }
@@ -95,7 +104,9 @@ class LeagueDetailsViewController: UIViewController {
         if(sport == "tennis"){
             teamsParameters["met"] = "Players"
             teamsParameters.removeValue(forKey: "leagueId")
+            group.enter()
             viewModel.getItems(parameters: &teamsParameters,sport:sport){[weak self] (result:[Team]) in
+                group.leave()
                 if(result.isEmpty){
                     self?.teams = Array()
                 }else{
@@ -103,7 +114,7 @@ class LeagueDetailsViewController: UIViewController {
                     if(!(self?.teams.isEmpty)!){
                         self?.teamsCount = 1
                     }
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { [weak self] in
                         self?.leagueDetailsCollection.reloadData()
                     }
                 }
@@ -145,6 +156,9 @@ class LeagueDetailsViewController: UIViewController {
             }
         }
         leagueDetailsCollection.setCollectionViewLayout(layout, animated: true)
+        group.notify(queue: .main){[weak self] in
+            self?.networkIndicator.stopAnimating()
+        }
     }
     @IBAction func goBack(_ sender: Any) {
         self.dismiss(animated: true)
@@ -338,15 +352,6 @@ extension LeagueDetailsViewController:UICollectionViewDataSource,UICollectionVie
             let maskLayer = CAShapeLayer()
             maskLayer.path = path.cgPath
             cell.overlayView.layer.mask = maskLayer
-//            cell.contentView.layer.cornerRadius = 20
-//            cell.layer.backgroundColor = UIColor.white.cgColor
-//            cell.layer.cornerRadius = 20
-//            cell.layer.shadowColor = UIColor.gray.cgColor
-//            cell.layer.shadowOffset = CGSize(width: 0.1, height: 2.0)
-//            cell.layer.shadowRadius = 7.0
-//            cell.layer.shadowOpacity = 0.7
-//            cell.layer.masksToBounds = false
-            
             return cell
         }
     }
@@ -366,6 +371,13 @@ extension LeagueDetailsViewController:UICollectionViewDataSource,UICollectionVie
             favConrtoller.cricketArr = favConrtoller.viewModel.getFavorites(sport: "cricket")
             favConrtoller.tennisArr = favConrtoller.viewModel.getFavorites(sport: "tennis")
             favConrtoller.favoriteLeaguesTable.reloadData()
+            if(favConrtoller.footballArr.isEmpty && favConrtoller.basketballArr.isEmpty && favConrtoller.cricketArr.isEmpty && favConrtoller.tennisArr.isEmpty){
+                favConrtoller.emptyView.isHidden = false
+                favConrtoller.favoriteLeaguesTable.isHidden = true
+            }else{
+                favConrtoller.emptyView.isHidden = true
+                favConrtoller.favoriteLeaguesTable.isHidden = false
+            }
         }
     }
 }

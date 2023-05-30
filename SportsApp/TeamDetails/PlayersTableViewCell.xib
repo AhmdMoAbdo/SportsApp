@@ -93,6 +93,7 @@
                 <outlet property="playerName" destination="a7A-uC-HMc" id="TU0-Bn-8uO"/>
                 <outlet property="playerNumber" destination="XIZ-6w-qXZ" id="uvX-UZ-xxg"/>
                 <outlet property="playerPosition" destination="XCR-qv-DVv" id="Y4r-2D-jKb"/>
+                <outlet property="shirtNOLabel" destination="OQA-Ko-c4D" id="T71-la-keY"/>
             </connections>
             <point key="canvasLocation" x="50.381679389312978" y="33.802816901408455"/>
         </tableViewCell>

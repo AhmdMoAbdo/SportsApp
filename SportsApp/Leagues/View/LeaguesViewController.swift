@@ -18,10 +18,14 @@ class LeaguesViewController: UIViewController {
     var parameters:Parameters!
     var country:Country!
     var headerText = ""
+    var networkIndicator:UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        networkIndicator = UIActivityIndicatorView(style: .large)
+        networkIndicator.center = self.view.center
+        self.view.addSubview(networkIndicator)
+        networkIndicator.startAnimating()
         countryName.text = headerText
         let cellNib = UINib(nibName: "CustomLeaguesTableViewCell", bundle: nil)
         leagueTable.register(cellNib, forCellReuseIdentifier: "customLeagueCell")
@@ -31,8 +35,9 @@ class LeaguesViewController: UIViewController {
                 self?.arr = Array()
             }else{
                 self?.arr = result
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     self?.leagueTable.reloadData()
+                    self?.networkIndicator.stopAnimating()
                 }
             }
         }
@@ -70,7 +75,6 @@ extension LeaguesViewController:UITableViewDelegate,UITableViewDataSource{
         let leagueDetails = self.storyboard?.instantiateViewController(withIdentifier: "leagueDetails") as! LeagueDetailsViewController
         leagueDetails.league = arr[indexPath.row]
         leagueDetails.sport = self.sport
-        print(arr[indexPath.row].league_key)
         self.present(leagueDetails, animated: true)
     }
     

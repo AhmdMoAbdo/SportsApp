@@ -468,6 +468,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="baK-EV-1mh">
+                                <rect key="frame" x="16" y="249.66666666666666" width="361" height="319.33333333333337"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty" translatesAutoresizingMaskIntoConstraints="NO" id="bS9-wi-IdW">
+                                        <rect key="frame" x="0.0" y="0.0" width="361" height="319.33333333333331"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your favorite list is empty" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3XQ-pm-WSK">
+                                        <rect key="frame" x="0.0" y="283" width="361" height="20.333333333333314"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="3XQ-pm-WSK" secondAttribute="trailing" id="1Fl-dD-29U"/>
+                                    <constraint firstItem="3XQ-pm-WSK" firstAttribute="leading" secondItem="baK-EV-1mh" secondAttribute="leading" id="2yd-yp-PC4"/>
+                                    <constraint firstAttribute="trailing" secondItem="bS9-wi-IdW" secondAttribute="trailing" id="F4o-zc-b7n"/>
+                                    <constraint firstAttribute="bottom" secondItem="3XQ-pm-WSK" secondAttribute="bottom" constant="16" id="lF7-vA-Khe"/>
+                                    <constraint firstItem="bS9-wi-IdW" firstAttribute="leading" secondItem="baK-EV-1mh" secondAttribute="leading" id="nx7-bG-YWe"/>
+                                    <constraint firstAttribute="bottom" secondItem="bS9-wi-IdW" secondAttribute="bottom" id="o6J-Pm-ips"/>
+                                    <constraint firstItem="bS9-wi-IdW" firstAttribute="top" secondItem="baK-EV-1mh" secondAttribute="top" id="vsw-Zh-11m"/>
+                                </constraints>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite Leagues" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cF7-03-ZUG">
                                 <rect key="frame" x="93" y="67" width="207" height="37"/>
                                 <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="30"/>
@@ -488,14 +512,20 @@
                         <constraints>
                             <constraint firstItem="hYs-we-0m9" firstAttribute="top" secondItem="cF7-03-ZUG" secondAttribute="bottom" constant="8" id="1qC-mf-VaS"/>
                             <constraint firstItem="hYs-we-0m9" firstAttribute="leading" secondItem="lOW-5r-x7t" secondAttribute="leading" id="Eia-SB-JJf"/>
+                            <constraint firstItem="baK-EV-1mh" firstAttribute="width" secondItem="lOW-5r-x7t" secondAttribute="width" multiplier="0.918575" id="MeO-dn-MQM"/>
+                            <constraint firstItem="lOW-5r-x7t" firstAttribute="trailing" secondItem="baK-EV-1mh" secondAttribute="trailing" constant="16" id="NTj-vr-vGO"/>
                             <constraint firstItem="lOW-5r-x7t" firstAttribute="bottom" secondItem="hYs-we-0m9" secondAttribute="bottom" id="OuM-qY-rKc"/>
                             <constraint firstItem="cF7-03-ZUG" firstAttribute="top" secondItem="lOW-5r-x7t" secondAttribute="top" constant="8" id="QHa-1D-tLp"/>
                             <constraint firstItem="cF7-03-ZUG" firstAttribute="centerX" secondItem="kTl-Cc-S4I" secondAttribute="centerX" id="YpB-Ds-e11"/>
                             <constraint firstItem="lOW-5r-x7t" firstAttribute="trailing" secondItem="hYs-we-0m9" secondAttribute="trailing" id="Ytb-OX-2qd"/>
+                            <constraint firstItem="baK-EV-1mh" firstAttribute="leading" secondItem="lOW-5r-x7t" secondAttribute="leading" constant="16" id="aXJ-cD-3Ka"/>
+                            <constraint firstItem="baK-EV-1mh" firstAttribute="height" secondItem="lOW-5r-x7t" secondAttribute="height" multiplier="0.45" id="ico-85-aua"/>
+                            <constraint firstItem="lOW-5r-x7t" firstAttribute="bottom" secondItem="baK-EV-1mh" secondAttribute="bottom" constant="200" id="wfz-fP-GsC"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Favorites" image="heart" catalog="system" id="w7z-OT-UZL"/>
                     <connections>
+                        <outlet property="emptyView" destination="baK-EV-1mh" id="gfP-vv-otZ"/>
                         <outlet property="favoriteLeaguesTable" destination="hYs-we-0m9" id="4lZ-To-OEA"/>
                     </connections>
                 </viewController>
@@ -544,6 +574,7 @@
     </scenes>
     <resources>
         <image name="back" width="200" height="200"/>
+        <image name="empty" width="768" height="576"/>
         <image name="heart" catalog="system" width="128" height="107"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="sportscourt" catalog="system" width="128" height="83"/>
