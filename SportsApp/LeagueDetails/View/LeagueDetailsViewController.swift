@@ -343,9 +343,9 @@ extension LeagueDetailsViewController:UICollectionViewDataSource,UICollectionVie
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "teamsCell", for: indexPath) as! TeamsCollectionViewCell
             cell.teamImg.kf.setImage(with:URL(string: teams[indexPath.row].team_logo ?? ""), placeholder: UIImage(named: sport))
             cell.teamName.text = teams[indexPath.row].team_name
-            cell.teamImg.layer.borderWidth = 4
-            cell.teamImg.layer.borderColor = UIColor.black.cgColor
-            cell.teamImg.layer.cornerRadius = cell.teamImg.frame.height/2
+//            cell.teamImg.layer.borderWidth = 4
+//            cell.teamImg.layer.borderColor = UIColor.black.cgColor
+//            cell.teamImg.layer.cornerRadius = cell.teamImg.frame.height/2
             let path = UIBezierPath(roundedRect:cell.overlayView.bounds,
                                     byRoundingCorners:[.topRight, .topLeft],
                                     cornerRadii: CGSize(width: 20, height:  20))
